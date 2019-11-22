@@ -24,6 +24,8 @@ public class ClientGUI extends Application {
     private HBox btmContainer;
     private Button send;
 
+    private ClientGUI ref;
+
 
     @Override
     public void start(Stage s){
@@ -40,7 +42,8 @@ public class ClientGUI extends Application {
         stage.setMinWidth(500);
         stage.show();
 
-        connectServer();
+        ref = this;
+        connectServer(ref);
     }
 
     // initialize the GUI
@@ -111,16 +114,21 @@ public class ClientGUI extends Application {
 
     }
 
-    private void connectServer(){
+    private void connectServer(ClientGUI ref){
 
-        client = new Client("localhost",9000);
+        client = new Client("localhost",9000,ref);
 
         // after successful connection
         Platform.runLater(()->{
             input.setEditable(true);
             input.setDisable(false);
             send.setDisable(false);
+
+            // handle graceful exit when user close window directly
+            // TODO what happens if connection fail and I try to close ?
             stage.setOnCloseRequest(event -> {
+                client.sendMessage("QUIT");
+                client.closeConnection();
             });
         });
 
@@ -134,6 +142,18 @@ public class ClientGUI extends Application {
             return ;
         }
 
+        client.sendMessage(msg);
+
+        if(msg.equals("QUIT")){
+            stage.close();
+            client.closeConnection();
+        }
+
+    }
+
+    // add server response to the chat area
+    public void appendChat(String msg){
+        Platform.runLater(()->chat.appendText(msg + '\n'));
     }
 
     public static void main(String[] args){

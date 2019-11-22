@@ -15,6 +15,7 @@ public class Client {
     private BufferedReader streamIn = null; // get responses from server via socket input stream
     private ServerResponse serverResponse;
     private ConsoleInput consoleInput;
+    private ClientGUI cgui = null; // GUI reference for easy manipulation of UI elements
 
     // constructor for basic Client using computer terminal
     public Client(String serverIp, int serverPort) {
@@ -30,6 +31,19 @@ public class Client {
         Thread consoleInputThread = new Thread(consoleInput);
         consoleInputThread.start();
 
+
+    }
+
+    public Client(String serverIp, int serverPort, ClientGUI cg){
+
+        startConnection(serverIp, serverPort);
+
+        cgui = cg;
+
+        // we do not need ConsoleInput here as the GUI will be responsible for sending messages
+        serverResponse = new ServerResponse();
+        Thread serverResponseThread = new Thread(serverResponse);
+        serverResponseThread.start();
 
     }
 
@@ -57,6 +71,11 @@ public class Client {
     // graceful exit of a Client
     public void closeConnection(){
 
+        // clean up threads
+        if(serverResponse!=null) serverResponse.shutdown();
+
+        if(consoleInput!=null) consoleInput.shutdown();
+
         // clean up IO streams
         try{
             if(console!=null) console.close();
@@ -76,12 +95,13 @@ public class Client {
             System.out.println("Error closing socket: " + ioe.getMessage());
         }
 
-        // clean up threads
-        if(serverResponse!=null) serverResponse.shutdown();
-
-        if(consoleInput!=null) consoleInput.shutdown();
 
 
+
+    }
+
+    public void sendMessage(String message){
+        streamOut.println(message);
     }
 
     private class ServerResponse implements Runnable {
@@ -97,7 +117,15 @@ public class Client {
 
                     try{
                         String response = streamIn.readLine();
-                        System.out.println(response);
+
+                        // check if we are using gui or not
+                        if(cgui != null){
+                            cgui.appendChat(response);
+                        }
+                        else{
+                            System.out.println(response);
+                        }
+
                     }
                     catch(IOException ioe){
                         System.out.println("Error reading from server socket: " + ioe.getMessage());
@@ -127,7 +155,7 @@ public class Client {
 
                     try{
                         input = console.readLine();
-                        streamOut.println(input);
+                        sendMessage(input);
 
                         if(input.equals("QUIT")){
                             closeConnection(); // try to exit gracefully after calling QUIT to prevent NullPointerException in server
