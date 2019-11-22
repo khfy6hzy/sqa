@@ -16,6 +16,7 @@ public class Client {
     private ServerResponse serverResponse;
     private ConsoleInput consoleInput;
     private ClientGUI cgui = null; // GUI reference for easy manipulation of UI elements
+    private boolean connected = false; // flag to check connection status
 
     // constructor for basic Client using computer terminal
     public Client(String serverIp, int serverPort) {
@@ -57,6 +58,7 @@ public class Client {
             console = new BufferedReader(new InputStreamReader(System.in));
             streamOut = new PrintWriter(socket.getOutputStream(),true);
             streamIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            connected = true;
         }
         catch(UnknownHostException uhe){
             System.out.println("Connection Error :" + uhe.getMessage());
@@ -102,6 +104,10 @@ public class Client {
 
     public void sendMessage(String message){
         streamOut.println(message);
+    }
+
+    public boolean getConnectionStatus(){
+        return connected;
     }
 
     private class ServerResponse implements Runnable {
