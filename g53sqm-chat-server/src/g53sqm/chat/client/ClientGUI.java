@@ -126,10 +126,17 @@ public class ClientGUI extends Application {
 
             // handle graceful exit when user close window directly
             // TODO what happens if connection fail and I try to close ?
-            stage.setOnCloseRequest(event -> {
-                client.sendMessage("QUIT");
-                client.closeConnection();
-            });
+            if(client.getConnectionStatus()){
+                stage.setOnCloseRequest(event -> {
+                    client.sendMessage("QUIT");
+                    client.closeConnection();
+                });
+            }
+            else{
+                stage.setOnCloseRequest(event -> {
+                    client.closeConnection(); // still need to cleanup here
+                });
+            }
         });
 
     }
