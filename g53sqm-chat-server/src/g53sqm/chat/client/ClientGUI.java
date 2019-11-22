@@ -1,5 +1,6 @@
 package g53sqm.chat.client;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,28 +11,24 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class ClientGUI{
+public class ClientGUI extends Application {
 
     private Stage stage;
     private GridPane gridPane;
     private TextArea chat;
     private TextArea input;
     private Client client;
+    private ClientGUI gui;
     private ObservableList onlineUsers;
     private ListView online;
     private HBox btmContainer;
     private Button send;
 
     private ClientGUI ref;
-    private String ip;
-    private int port;
 
-    public ClientGUI(String serverIp, int serverPort){
-        ip = serverIp;
-        port = serverPort;
-    }
 
-    public Scene getScene(Stage s) {
+    @Override
+    public void start(Stage s){
 
         stage = s;
 
@@ -40,11 +37,13 @@ public class ClientGUI{
 
         //finally set up the scene
         Scene scene = new Scene(gridPane);
+        stage.setScene(scene);
+        stage.setMinHeight(500);
+        stage.setMinWidth(500);
+        stage.show();
 
         ref = this;
         connectServer(ref);
-
-        return scene;
     }
 
     // initialize the GUI
@@ -117,7 +116,7 @@ public class ClientGUI{
 
     private void connectServer(ClientGUI ref){
 
-        client = new Client(ip,port,ref);
+        client = new Client("localhost",9000,ref);
 
         // after successful connection
         Platform.runLater(()->{
@@ -164,12 +163,7 @@ public class ClientGUI{
         Platform.runLater(()->chat.appendText(msg + '\n'));
     }
 
-    public boolean getConnectionStatus(){
-        return client.getConnectionStatus();
+    public static void main(String[] args){
+        launch(args);
     }
-
-    public void cleanExit(){
-        client.closeConnection();
-    }
-
 }
