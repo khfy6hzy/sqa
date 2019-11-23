@@ -1,6 +1,5 @@
 package g53sqm.chat.client;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,24 +10,30 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class ClientGUI extends Application {
+public class ClientGUI{
 
     private Stage stage;
     private GridPane gridPane;
     private TextArea chat;
     private TextArea input;
     private Client client;
-    private ClientGUI gui;
     private ObservableList onlineUsers;
     private ListView online;
     private HBox btmContainer;
     private Button send;
+    private Scene scene;
 
     private ClientGUI ref;
+    private ClientSplashScreen splashScreenRef;
+    private String ip;
+    private int port;
 
+    public ClientGUI(String serverIp, int serverPort){
+        ip = serverIp;
+        port = serverPort;
+    }
 
-    @Override
-    public void start(Stage s){
+    public void init(Stage s) {
 
         stage = s;
 
@@ -36,14 +41,11 @@ public class ClientGUI extends Application {
         setupGUI();
 
         //finally set up the scene
-        Scene scene = new Scene(gridPane);
-        stage.setScene(scene);
-        stage.setMinHeight(500);
-        stage.setMinWidth(500);
-        stage.show();
+        scene = new Scene(gridPane);
 
         ref = this;
         connectServer(ref);
+
     }
 
     // initialize the GUI
@@ -116,7 +118,7 @@ public class ClientGUI extends Application {
 
     private void connectServer(ClientGUI ref){
 
-        client = new Client("localhost",9000,ref);
+        client = new Client(ip,port,ref);
 
         // after successful connection
         Platform.runLater(()->{
@@ -163,7 +165,32 @@ public class ClientGUI extends Application {
         Platform.runLater(()->chat.appendText(msg + '\n'));
     }
 
-    public static void main(String[] args){
-        launch(args);
+    public boolean getConnectionStatus(){
+        return client.getConnectionStatus();
     }
+
+    public void validateUsername(String username,ClientSplashScreen ref){
+        splashScreenRef = ref;
+        client.validateUsername(username);
+    }
+
+    public void transitionToChatWindow(boolean flag){
+        if(flag){
+            splashScreenRef.transitionToChatWindow();
+        }
+        else{
+            splashScreenRef.loginError();
+        }
+    }
+
+
+
+    public Scene getScene(){
+        return scene;
+    }
+
+    public void cleanExit(){
+        client.closeConnection();
+    }
+
 }

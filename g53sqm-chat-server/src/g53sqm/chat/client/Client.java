@@ -18,6 +18,8 @@ public class Client {
     private ClientGUI cgui = null; // GUI reference for easy manipulation of UI elements
     private boolean connected = false; // flag to check connection status
 
+    private String username = "";
+
     // constructor for basic Client using computer terminal
     public Client(String serverIp, int serverPort) {
 
@@ -110,6 +112,11 @@ public class Client {
         return connected;
     }
 
+    public void validateUsername(String username){
+        this.username = username;
+        sendMessage("IDEN " + username);
+    }
+
     private class ServerResponse implements Runnable {
 
         private volatile boolean running = true; // volatile to force thread to read from main memory
@@ -126,7 +133,16 @@ public class Client {
 
                         // check if we are using gui or not
                         if(cgui != null){
-                            cgui.appendChat(response);
+                            if(response.contains("BAD username is already taken")){
+                                cgui.transitionToChatWindow(false);
+                            }
+                            else if(response.contains("OK Welcome to the chat server " + username)){
+                                cgui.transitionToChatWindow(true);
+                            }
+                            else{
+                                cgui.appendChat(response);
+                            }
+
                         }
                         else{
                             System.out.println(response);
@@ -145,6 +161,7 @@ public class Client {
         public void shutdown() {
             running = false;
         }
+
     }
 
     private class ConsoleInput implements Runnable {
