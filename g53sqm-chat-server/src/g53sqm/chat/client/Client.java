@@ -15,7 +15,7 @@ public class Client {
     private BufferedReader streamIn = null; // get responses from server via socket input stream
     private ServerResponse serverResponse;
     private ConsoleInput consoleInput;
-    private ClientGUI cgui = null; // GUI reference for easy manipulation of UI elements
+    private ClientDriverGUI cgui = null; // GUI reference for easy manipulation of UI elements
     private boolean connected = false; // flag to check connection status
 
     // constructor for basic Client using computer terminal
@@ -35,7 +35,7 @@ public class Client {
 
     }
 
-    public Client(String serverIp, int serverPort, ClientGUI cg){
+    public Client(String serverIp, int serverPort, ClientDriverGUI cg){
 
         startConnection(serverIp, serverPort);
 
@@ -126,7 +126,17 @@ public class Client {
 
                         // check if we are using gui or not
                         if(cgui != null){
-                            cgui.appendChat(response);
+
+                            if(response.contains("BAD username is already taken")){
+                                cgui.setSplashErrorMessage("Username already exists!");
+                                cgui.transition(false);
+                            }
+                            else if(response.contains("OK Welcome to the chat server " + cgui.getUsername())){
+                                cgui.appendChat(response);
+                                cgui.transition(true);
+                            }else{
+                                cgui.appendChat(response);
+                            }
                         }
                         else{
                             System.out.println(response);
