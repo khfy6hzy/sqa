@@ -45,7 +45,10 @@ public class ClientChatController {
     }
 
     public void updateOnlineUsers(ObservableList list){
-        Platform.runLater(()->chat.online.setItems(list));
+        Platform.runLater(()->{
+            chat.online.setItems(list);
+            chat.numberOnline.setText("Online user(s):" + list.size());
+        });
 
     }
 

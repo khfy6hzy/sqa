@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
@@ -15,9 +16,10 @@ public class ClientChatGUI {
     GridPane gridPane;
     TextArea chat;
     TextArea input;
-    ObservableList onlineUsers;
+    Label numberOnline;
     ListView online;
     HBox btmContainer;
+    VBox rightContainer;
     Button send;
 
     private ClientChatController controller;
@@ -43,10 +45,22 @@ public class ClientChatGUI {
         chat.setMouseTransparent(false);
         chat.setFocusTraversable(false);
 
+        // container for the number of online users and list of online users
+        rightContainer = new VBox();
+
+        // number of online users
+        numberOnline = new Label();
+        numberOnline.setLabelFor(online);
+        numberOnline.setText("Online user(s): ");
+
         //list of online users
         online = new ListView();
         online.setMouseTransparent(true);
         online.setFocusTraversable(false);
+
+        VBox.setVgrow(numberOnline,Priority.NEVER);
+        VBox.setVgrow(online,Priority.ALWAYS);
+        rightContainer.getChildren().addAll(numberOnline,online);
 
         // container for the input text area and send button
         btmContainer = new HBox();
@@ -85,7 +99,7 @@ public class ClientChatGUI {
 
         //add in all the elements the the base layout
         gridPane.add(chat, 0,0,1,1);
-        gridPane.add(online,1,0,1,1);
+        gridPane.add(rightContainer,1,0,1,1);
         gridPane.add(btmContainer,0,1,2,1);
     }
 
