@@ -79,6 +79,7 @@ public class ClientSplashController {
         splash.actionTarget.setFill(Color.FIREBRICK);
     }
 
+
     public String getUsername(){
         return username;
     }

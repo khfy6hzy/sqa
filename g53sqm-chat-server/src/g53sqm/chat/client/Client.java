@@ -112,11 +112,6 @@ public class Client {
         return connected;
     }
 
-    public void validateUsername(String username){
-        this.username = username;
-        sendMessage("IDEN " + username);
-    }
-
     private class ServerResponse implements Runnable {
 
         private volatile boolean running = true; // volatile to force thread to read from main memory
@@ -140,6 +135,12 @@ public class Client {
                             else if(response.equals("OK Welcome to the chat server " + cgui.getUsername())){
                                 cgui.appendChat(response);
                                 cgui.transition(true);
+                            }
+                            else if(response.length() >= 6 && response.substring(0,7).equals("OK STAT")){
+
+                                //sends the list of online users to the gui driver controller
+                                cgui.updateOnlineUsers(response.substring(8));
+
                             }
                             else{
                                 cgui.appendChat(response);
@@ -198,6 +199,8 @@ public class Client {
             running = false;
         }
     }
+
+
 
     public static void main(String args[]){
 

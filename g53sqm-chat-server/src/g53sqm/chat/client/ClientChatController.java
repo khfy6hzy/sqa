@@ -1,6 +1,7 @@
 package g53sqm.chat.client;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 public class ClientChatController {
 
@@ -41,6 +42,11 @@ public class ClientChatController {
     // add server response to the chat area
     public void appendChat(String msg){
         Platform.runLater(()->chat.chat.appendText(msg + '\n'));
+    }
+
+    public void updateOnlineUsers(ObservableList list){
+        Platform.runLater(()->chat.online.setItems(list));
+
     }
 
     public void clean(){
