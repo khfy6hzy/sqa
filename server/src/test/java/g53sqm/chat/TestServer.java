@@ -38,7 +38,9 @@ public class TestServer {
     private void userEnterCommandAndText(Socket user, String text){
         try{
             PrintWriter user_out = new PrintWriter(user.getOutputStream(), true);
-        }catch(IOException ie) {
+            user_out.println(text);
+            Thread.sleep(1000);
+        }catch(IOException|InterruptedException ie) {
             Assert.fail("Failed to send command and text");
         }
     }
@@ -111,7 +113,7 @@ public class TestServer {
         //client1 quits
         userEnterCommandAndText(client1, "QUIT");
         ArrayList<String> actual_users_online = test_server.getUserList();
-        String[] expected_users_online = new String[2];
+        String[] expected_users_online = new String[1];
         expected_users_online[0] = "client2";
         assertEquals(expected_users_online[0],actual_users_online.get(0));
         assertArrayEquals(expected_users_online,actual_users_online.toArray());
