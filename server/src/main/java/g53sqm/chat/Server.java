@@ -60,6 +60,10 @@ public class Server {
 		for( Connection clientThread: list){
 			if(clientThread.getState() == Connection.STATE_REGISTERED) {
 				result = clientThread.getUserName().compareTo(newUser)==0;
+
+				if(result==true){
+				    break;
+                }
 			}
 		}
 		return result;
