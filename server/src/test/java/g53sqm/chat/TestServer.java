@@ -17,18 +17,18 @@ public class TestServer {
     private Thread test_server_thread;
 
     public class test_runnable implements Runnable{
-        private Server server;
         public void run() {
 
             System.out.println("Test server thread started");
+            test_server.listen();
         }
     }
 
     private Socket createMockUsers(String username, int portNo){
-    Socket user = null;
+        Socket user = null;
         try{
             user = new Socket("localhost",test_port_no);
-            userEnterCommandAndText(user, "IDEN" + username);
+            userEnterCommandAndText(user, "IDEN " + username);
         }catch (IOException e) {
             Assert.fail("Mock user setup failed");
         }
@@ -60,7 +60,7 @@ public class TestServer {
     @Before
     public void initialiseServer(){
 
-        test_server = new Server(9000);
+        test_server = new Server(0);
         test_port_no = test_server.getPortNo();
         Runnable runnable = new test_runnable();
         test_server_thread = new Thread(runnable);
@@ -342,12 +342,7 @@ public class TestServer {
 
     @After
     public void closeConnection(){
-        try {
-            test_server.finalize();
-        }
-        catch(IOException ie) {
-            ie.printStackTrace();
-        }
+        test_server.stopListening();
 
     }
 

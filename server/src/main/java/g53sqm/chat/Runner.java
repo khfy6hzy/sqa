@@ -6,7 +6,9 @@ public class Runner
 	final static int PORT = 9000;
 	
 	public static void main(String[] args){
+
 		server = new Server(PORT);
+		server.listen();
 	}
 	
 	
