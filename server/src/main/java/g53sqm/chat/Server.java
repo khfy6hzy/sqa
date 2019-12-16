@@ -1,4 +1,4 @@
-package g53sqm.chat.server;
+package g53sqm.chat;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -87,7 +87,12 @@ public class Server {
 	public int getNumberOfUsers() {
 		return list.size();
 	}
-	
+
+	// To test server
+	public int getPortNo(){
+		return server.getLocalPort();
+	}
+
 	protected void finalize() throws IOException{
 		server.close();
 	}

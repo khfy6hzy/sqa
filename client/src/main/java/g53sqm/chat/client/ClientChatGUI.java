@@ -1,6 +1,5 @@
 package g53sqm.chat.client;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -8,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
 public class ClientChatGUI {
 

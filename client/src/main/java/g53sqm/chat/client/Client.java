@@ -133,14 +133,15 @@ public class Client {
 
                         // check if we are using gui or not
                         if(cgui != null){
-                            if(response.contains("BAD username is already taken")){
+                            if(response.equals("BAD username is already taken")){
                                 cgui.setSplashErrorMessage("Username already exists!");
                                 cgui.transition(false);
                             }
-                            else if(response.contains("OK Welcome to the chat server " + cgui.getUsername())){
+                            else if(response.equals("OK Welcome to the chat server " + cgui.getUsername())){
                                 cgui.appendChat(response);
                                 cgui.transition(true);
-                            }else{
+                            }
+                            else{
                                 cgui.appendChat(response);
                             }
                         }
