@@ -1,4 +1,4 @@
-package g53sqm.chat.server;
+package g53sqm.chat;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,31 +10,40 @@ public class Server {
 
 	private ServerSocket server;
 	private ArrayList<Connection> list;
+	protected boolean isListen = false;
 	
 	public Server (int port) {
 		try {
 			server = new ServerSocket(port);
 			System.out.println("Server has been initialised on port " + port);
+			isListen = true;
 		}
 		catch (IOException e) {
 			System.err.println("error initialising server");
 			e.printStackTrace();
 		}
 		list = new ArrayList<Connection>();
-		while(true) {
-				Connection c = null;
-				try {
-					c = new Connection(server.accept(), this);
-				}
-				catch (IOException e) {
-					System.err.println("error setting up new client conneciton");
-					e.printStackTrace();
-				}
-				Thread t = new Thread(c);
-				t.start();
-				list.add(c);
-		}
 	}
+
+	public void listen(){
+        while(isListen) {
+            Connection c = null;
+            try {
+                c = new Connection(server.accept(), this);
+            }
+            catch (IOException e) {
+                System.err.println("error setting up new client conneciton");
+                e.printStackTrace();
+            }
+            Thread t = new Thread(c);
+            t.start();
+            list.add(c);
+        }
+    }
+
+    public void stopListening(){
+	    isListen = false;
+    }
 	
 	public ArrayList<String> getUserList() {
 		ArrayList<String> userList = new ArrayList<String>();
@@ -51,6 +60,10 @@ public class Server {
 		for( Connection clientThread: list){
 			if(clientThread.getState() == Connection.STATE_REGISTERED) {
 				result = clientThread.getUserName().compareTo(newUser)==0;
+
+				if(result==true){
+				    break;
+                }
 			}
 		}
 		return result;
@@ -87,7 +100,12 @@ public class Server {
 	public int getNumberOfUsers() {
 		return list.size();
 	}
-	
+
+	// To test server
+	public int getPortNo(){
+		return server.getLocalPort();
+	}
+
 	protected void finalize() throws IOException{
 		server.close();
 	}
