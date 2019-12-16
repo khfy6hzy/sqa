@@ -1,4 +1,4 @@
-package g53sqm.chat.server;
+package g53sqm.chat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
