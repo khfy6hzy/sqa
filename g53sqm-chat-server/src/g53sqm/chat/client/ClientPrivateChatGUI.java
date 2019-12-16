@@ -1,35 +1,34 @@
 package g53sqm.chat.client;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public class ClientChatGUI {
+public class ClientPrivateChatGUI {
 
     GridPane gridPane;
     TextArea chat;
     TextArea input;
-    Label numberOnline;
-    ListView online;
     HBox btmContainer;
-    VBox rightContainer;
     Button send;
+    Stage stage;
 
-    private ClientChatController controller;
+    private ClientPrivateChatController controller;
+    private String pmTarget;
 
-    public ClientChatGUI(ClientChatController controller){
+    public ClientPrivateChatGUI(ClientPrivateChatController controller, String pmTarget){
         this.controller = controller;
+        this.pmTarget = pmTarget;
         init();
     }
 
     private void init(){
-
-        // base layout of the the chat window
         gridPane = new GridPane();
         gridPane.setPrefSize(525,525);
         gridPane.setPadding(new Insets(10,10,10,10));
@@ -43,27 +42,6 @@ public class ClientChatGUI {
         chat.setMouseTransparent(false);
         chat.setFocusTraversable(false);
 
-        // container for the number of online users and list of online users
-        rightContainer = new VBox();
-
-        // number of online users
-        numberOnline = new Label();
-        numberOnline.setLabelFor(online);
-        numberOnline.setText("Online user(s): ");
-
-        //list of online users
-        online = new ListView();
-        online.setMouseTransparent(false);
-        online.setFocusTraversable(false);
-        online.setOnMouseClicked((event)-> {
-            if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount()==1){
-                controller.openPrivateChatWindow();
-            }
-        });
-        VBox.setVgrow(numberOnline,Priority.NEVER);
-        VBox.setVgrow(online,Priority.ALWAYS);
-        rightContainer.getChildren().addAll(numberOnline,online);
-
         // container for the input text area and send button
         btmContainer = new HBox();
 
@@ -76,7 +54,7 @@ public class ClientChatGUI {
         send = new Button();
         send.setText("Send");
         send.setOnAction(event -> {
-            controller.doSend();
+            controller.doSend(pmTarget);
         });
 
         //set margins and combine all components into the container
@@ -89,10 +67,8 @@ public class ClientChatGUI {
         //set horizontal resizing for columns
         //refer to http://zetcode.com/gui/javafx/layoutpanes/
         ColumnConstraints colCons1 = new ColumnConstraints();
-        ColumnConstraints colCons2 = new ColumnConstraints();
         colCons1.setHgrow(Priority.ALWAYS); // allow the main chat area to be responsive
-        colCons2.setHgrow(Priority.NEVER); // the online user list does not need to be responsive
-        gridPane.getColumnConstraints().addAll(colCons1,colCons2);
+        gridPane.getColumnConstraints().addAll(colCons1);
 
         //set vertical resizing for rows
         RowConstraints rowCons1 = new RowConstraints();
@@ -101,12 +77,20 @@ public class ClientChatGUI {
 
         //add in all the elements the the base layout
         gridPane.add(chat, 0,0,1,1);
-        gridPane.add(rightContainer,1,0,1,1);
-        gridPane.add(btmContainer,0,1,2,1);
+        gridPane.add(btmContainer,0,1,1,1);
+
+        stage = new Stage();
+
+        Platform.runLater(() -> {
+            stage.setTitle("Private chat with " + pmTarget);
+            stage.setScene(new Scene(gridPane));
+            stage.initModality(Modality.NONE);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.show();
+        });
     }
 
-    public Scene getScene(){
-        return new Scene(gridPane);
+    public Stage getStage(){
+        return stage;
     }
-
 }

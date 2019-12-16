@@ -52,6 +52,13 @@ public class ClientChatController {
 
     }
 
+    public void openPrivateChatWindow(){
+
+            driver.openPrivateChatWindow(chat.online.getSelectionModel().getSelectedItem().toString());
+
+
+    }
+
     public void clean(){
         Platform.runLater(()->chat.chat.clear());
     }

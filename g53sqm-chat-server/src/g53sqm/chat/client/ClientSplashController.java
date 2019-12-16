@@ -65,6 +65,7 @@ public class ClientSplashController {
             driver.getPrimaryStage().setOnCloseRequest(event -> {
                 client.sendMessage("QUIT");
                 client.closeConnection();
+                Platform.exit();
             });
 
             client.sendMessage("IDEN " + username);
