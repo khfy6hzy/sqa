@@ -38,16 +38,25 @@ public class Connection implements Runnable {
 			System.exit(-1);
 		}
 		running = true;
-		this.sendOverConnection("OK Welcome to the chat server, there are currelty " + serverReference.getNumberOfUsers() + " user(s) online");
+		this.sendOverConnection("OK Welcome to the chat server, there are currently " + serverReference.getNumberOfUsers() + " user(s) online");
 		while(running) {
 			try {
 				line = in.readLine();
-				validateMessage(line);	
+				if(line!=null){
+				    validateMessage(line);
+                }else{
+				    running=false;
+                }
 			} catch (IOException e) {
+			    running = false;
 				System.out.println("Read failed");
-				System.exit(-1);
+//				System.exit(-1);
 			}
 		}
+
+		if(!running){
+		    serverReference.removeDeadUsers();
+        }
 	}
 	
 	private void validateMessage(String message) {

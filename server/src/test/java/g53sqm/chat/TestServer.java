@@ -72,7 +72,7 @@ public class TestServer {
         test_server_thread.start();
 
 
-        // Let it sleep for 1 second to ensure thread executed
+        // Sleep for 1 second for thread execution
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
