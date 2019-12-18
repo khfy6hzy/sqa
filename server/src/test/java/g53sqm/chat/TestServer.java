@@ -81,6 +81,43 @@ public class TestServer {
     }
 
     @Test
+    public void isListen_serverInitialised_returnTrue(){
+        test_server = new Server(0);
+        assertTrue(test_server.isListen());
+        test_server.stopListening();
+    }
+
+    @Test
+    public void isListen_serverInitialisedAndEnd_returnCorrectState(){
+        test_server = new Server(0);
+        Runnable runnable = new test_runnable();
+        test_server_thread = new Thread(runnable);
+
+        // Set thread as Daemon to automatically terminate when JVM terminates
+        test_server_thread.setDaemon(true);
+        test_server_thread.start();
+
+
+        // Sleep for 1 second for thread execution
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(test_server.isListen());
+
+        test_server.stopListening();
+        // Sleep for 1 second for server to end
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertFalse(test_server.isListen());
+    }
+
+    @Test
     public void getUserList_noUsersOnline_returnEmptyList(){
         ArrayList<String> actual_users_online = test_server.getUserList();
         String[] expected_users_online = new String[]{};

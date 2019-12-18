@@ -41,6 +41,10 @@ public class Server {
         }
     }
 
+    public boolean isListen(){
+		return isListen;
+	}
+
     public void stopListening(){
 	    isListen = false;
     }
