@@ -63,6 +63,7 @@ public class ClientDriverGUITest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) {
+        stage.setAlwaysOnTop(true);
         new ClientDriverGUI().start(stage);
         this.primaryStage = stage;
     }
