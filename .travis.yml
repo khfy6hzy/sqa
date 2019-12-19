@@ -3,20 +3,18 @@
 
 language: java
 
+sudo: false # Run Linux in container
+
 jdk: oraclejdk8
 
-os:
-  - osx
-  - linux
-
-osx_image: xcode9.3
+os: linux
 
 dist: trusty
 
 env:
   - _JAVA_OPTIONS="-Dtestfx.robot=glass -Dglass.gtk.uiScale=2.0"
 
-script: chmod +x ./gradlew && ./gradlew build --stacktrace
+script: chmod +x ./gradlew && ./gradlew build --stacktrace --info
 
 addons:
   apt:
