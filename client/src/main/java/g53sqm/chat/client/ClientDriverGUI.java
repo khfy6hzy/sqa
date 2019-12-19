@@ -25,6 +25,7 @@ public class ClientDriverGUI extends Application {
         primaryStage.setScene(splash.getScene());
         primaryStage.setMinWidth(525);
         primaryStage.setMinHeight(525);
+        primaryStage.setTitle("Connect to Chat Room");
         primaryStage.show();
 
         chatController = new ClientChatController();
@@ -45,6 +46,7 @@ public class ClientDriverGUI extends Application {
                 chatController.setClient(splashController.getClient());
 
                 primaryStage.setScene(chat.getScene());
+                primaryStage.setTitle("Public Chat Room");
             });
         }
         else{
@@ -60,7 +62,6 @@ public class ClientDriverGUI extends Application {
     public void appendChat(String msg){
         chatController.appendChat(msg);
     }
-
 
     public void setSplashErrorMessage(String msg){
         splashController.setErrorMessage(msg);
