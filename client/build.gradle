@@ -11,6 +11,13 @@ dependencies {
     compile project(':server')
 }
 
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
+
 mainClassName = 'g53sqm.chat.client.Client'
 
 jar {
