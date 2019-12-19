@@ -127,7 +127,7 @@ public class ClientDriverGUITest extends ApplicationTest {
         clickOn("#usernameField").write("test_user_1");
         clickOn("#connect");
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(lookup.getText(),"Username already exists!");
+        assertEquals("Username already exists!", lookup.getText());
     }
 
 
