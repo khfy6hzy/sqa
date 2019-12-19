@@ -112,11 +112,6 @@ public class Client {
         return connected;
     }
 
-    public void validateUsername(String username){
-        this.username = username;
-        sendMessage("IDEN " + username);
-    }
-
     private class ServerResponse implements Runnable {
 
         private volatile boolean running = true; // volatile to force thread to read from main memory

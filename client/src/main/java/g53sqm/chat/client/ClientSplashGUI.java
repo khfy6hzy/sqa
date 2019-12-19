@@ -27,7 +27,6 @@ public class ClientSplashGUI {
     }
 
     private void init(){
-
         gridPane = new GridPane();
         gridPane.setPrefSize(500,500);
         gridPane.setPadding(new Insets(25));
@@ -39,21 +38,25 @@ public class ClientSplashGUI {
         gridPane.add(serverIp,0,0);
         serverIpField = new TextField();
         gridPane.add(serverIpField,1,0);
+        serverIpField.setId("serverIpField");
 
         Label serverPort = new Label("Server Port");
         gridPane.add(serverPort,0,1);
         serverPortField = new TextField();
         gridPane.add(serverPortField,1,1);
+        serverPortField.setId("serverPortField");
 
         Label username = new Label("Username");
         gridPane.add(username,0,2);
         usernameField = new TextField();
         gridPane.add(usernameField,1,2);
+        usernameField.setId("usernameField");
 
         connect = new Button("Connect");
         connect.setOnAction(event -> {
            controller.validate();
         });
+        connect.setId("connect");
 
         HBox container = new HBox(10);
         container.setAlignment(Pos.BOTTOM_RIGHT);
@@ -62,6 +65,7 @@ public class ClientSplashGUI {
 
         actionTarget = new Text();
         gridPane.add(actionTarget,0,4,2,1);
+        actionTarget.setId("actionTarget");
     }
 
 

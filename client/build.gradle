@@ -8,6 +8,14 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     testImplementation "org.testfx:testfx-junit:4.0.16-alpha"
+    compile project(':server')
+}
+
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
 }
 
 mainClassName = 'g53sqm.chat.client.Client'
