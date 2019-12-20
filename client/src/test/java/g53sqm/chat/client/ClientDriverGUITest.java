@@ -131,6 +131,19 @@ public class ClientDriverGUITest extends ApplicationTest {
         assertEquals("Username already exists!", lookup.getText());
     }
 
+    @Test
+    public void succesful_login_usernameNotTaken() {
+        createMockUsers("test_user_1");
+        createMockUsers("test_user_2");
+        Text lookup = lookup("#actionTarget").query();
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#usernameField").write("test_user_3");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        assertEquals("Public Chat Room",primaryStage.getTitle());
+    }
+
 
     @After
     public void afterEachTest() throws TimeoutException {
@@ -138,7 +151,7 @@ public class ClientDriverGUITest extends ApplicationTest {
         FxToolkit.cleanupStages();
         release(new KeyCode[]{});
         release(new MouseButton[]{});
-        test_server.stopListening();
+//        test_server.stopListening();
     }
 
     private Socket createMockUsers(String username){
