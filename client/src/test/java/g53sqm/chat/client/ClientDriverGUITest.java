@@ -68,81 +68,81 @@ public class ClientDriverGUITest extends ApplicationTest {
         this.primaryStage = stage;
     }
 
-    @Test(expected = FxRobotException.class)
-    public void click_doesNotExist(){
-        clickOn("no_such_element");
-    }
-
-    @Test
-    public void successful_Login() {
-            assertEquals("Connect to Chat Room",primaryStage.getTitle());
-            clickOn("#serverIpField").write("localhost");
-            clickOn("#serverPortField").write(valueOf(test_port_no));
-            clickOn("#usernameField").write("test_user");
-            clickOn("#connect");
-            assertEquals("Public Chat Room",primaryStage.getTitle());
-
-    }
-
-    @Test
-    public void unsuccessful_login_emptyServerIpField(){
-        Text lookup = lookup("#actionTarget").query();
-        clickOn("#connect");
-        assertEquals(lookup.getText(),"Server IP cannot be empty!");
-    }
-
-    @Test
-    public void unsuccessful_login_emptyServerPortField(){
-        Text lookup = lookup("#actionTarget").query();
-        clickOn("#serverIpField").write("localhost");
-        clickOn("#connect");
-        assertEquals(lookup.getText(),"Invalid server port number!");
-    }
-
-    @Test
-    public void unsuccessful_login_emptyUsernameField(){
-        Text lookup = lookup("#actionTarget").query();
-        clickOn("#serverIpField").write("localhost");
-        clickOn("#serverPortField").write(valueOf(test_port_no));
-        clickOn("#connect");
-        assertEquals(lookup.getText(),"Username cannot be empty");
-    }
-
-    @Test
-    public void unsuccesful_login_wrongConnectionCredentials() {
-        Text lookup = lookup("#actionTarget").query();
-        clickOn("#serverIpField").write("blabla");
-        clickOn("#serverPortField").write("1234");
-        clickOn("#usernameField").write("test_user");
-        clickOn("#connect");
-        WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(lookup.getText(),"Cannot connect to server!");
-    }
-
+//    @Test(expected = FxRobotException.class)
+//    public void click_doesNotExist(){
+//        clickOn("no_such_element");
+//    }
+//
 //    @Test
-//    public void unsuccesful_login_usernameTaken() {
-//        createMockUsers("test_user_1");
+//    public void successful_Login() {
+//            assertEquals("Connect to Chat Room",primaryStage.getTitle());
+//            clickOn("#serverIpField").write("localhost");
+//            clickOn("#serverPortField").write(valueOf(test_port_no));
+//            clickOn("#usernameField").write("test_user");
+//            clickOn("#connect");
+//            assertEquals("Public Chat Room",primaryStage.getTitle());
+//
+//    }
+//
+//    @Test
+//    public void unsuccessful_login_emptyServerIpField(){
+//        Text lookup = lookup("#actionTarget").query();
+//        clickOn("#connect");
+//        assertEquals(lookup.getText(),"Server IP cannot be empty!");
+//    }
+//
+//    @Test
+//    public void unsuccessful_login_emptyServerPortField(){
+//        Text lookup = lookup("#actionTarget").query();
+//        clickOn("#serverIpField").write("localhost");
+//        clickOn("#connect");
+//        assertEquals(lookup.getText(),"Invalid server port number!");
+//    }
+//
+//    @Test
+//    public void unsuccessful_login_emptyUsernameField(){
 //        Text lookup = lookup("#actionTarget").query();
 //        clickOn("#serverIpField").write("localhost");
 //        clickOn("#serverPortField").write(valueOf(test_port_no));
-//        clickOn("#usernameField").write("test_user_1");
+//        clickOn("#connect");
+//        assertEquals(lookup.getText(),"Username cannot be empty");
+//    }
+//
+//    @Test
+//    public void unsuccesful_login_wrongConnectionCredentials() {
+//        Text lookup = lookup("#actionTarget").query();
+//        clickOn("#serverIpField").write("blabla");
+//        clickOn("#serverPortField").write("1234");
+//        clickOn("#usernameField").write("test_user");
 //        clickOn("#connect");
 //        WaitForAsyncUtils.waitForFxEvents();
-//        assertEquals("Username already exists!", lookup.getText());
+//        assertEquals(lookup.getText(),"Cannot connect to server!");
 //    }
 
     @Test
-    public void succesful_login_usernameNotTaken() {
+    public void unsuccesful_login_usernameTaken() {
         createMockUsers("test_user_1");
-        createMockUsers("test_user_2");
         Text lookup = lookup("#actionTarget").query();
         clickOn("#serverIpField").write("localhost");
         clickOn("#serverPortField").write(valueOf(test_port_no));
-        clickOn("#usernameField").write("test_user_3");
+        clickOn("#usernameField").write("test_user_1");
         clickOn("#connect");
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals("Public Chat Room",primaryStage.getTitle());
+        assertEquals("Username already exists!", lookup.getText());
     }
+
+//    @Test
+//    public void succesful_login_usernameNotTaken() {
+//        createMockUsers("test_user_1");
+//        createMockUsers("test_user_2");
+//        Text lookup = lookup("#actionTarget").query();
+//        clickOn("#serverIpField").write("localhost");
+//        clickOn("#serverPortField").write(valueOf(test_port_no));
+//        clickOn("#usernameField").write("test_user_3");
+//        clickOn("#connect");
+//        WaitForAsyncUtils.waitForFxEvents();
+//        assertEquals("Public Chat Room",primaryStage.getTitle());
+//    }
 
 
     @After
