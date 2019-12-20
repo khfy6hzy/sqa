@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class ClientDriverGUI extends Application {
@@ -19,9 +20,14 @@ public class ClientDriverGUI extends Application {
     private ClientChatController chatController;
     private Stage primaryStage;
     private ObservableList<String> onlineUsers;
+    private ArrayList<String> privateChatUsers;
+    private HashMap<String, ClientPrivateChatController> privateChatWindows;
 
     @Override
     public void start(Stage primaryStage) {
+        privateChatUsers = new ArrayList<>();
+        privateChatWindows = new HashMap<>();
+
         this.primaryStage = primaryStage;
 
         splashController = new ClientSplashController();
@@ -67,7 +73,6 @@ public class ClientDriverGUI extends Application {
 
             Platform.runLater(()->{
                 chatController.setClient(splashController.getClient());
-
                 primaryStage.setScene(chat.getScene());
                 primaryStage.setTitle("Public Chat Room");
             });
@@ -89,12 +94,56 @@ public class ClientDriverGUI extends Application {
     public void setSplashErrorMessage(String msg){
         splashController.setErrorMessage(msg);
     }
+
     public void updateOnlineUsers(String list){
         List<String> userList = new ArrayList<>(Arrays.asList(list.split(", ")));
         onlineUsers = FXCollections.observableArrayList();
         onlineUsers.clear();
         onlineUsers.addAll(userList);
         chatController.updateOnlineUsers(onlineUsers);
+    }
+
+    public void openPrivateChatWindow(String user){
+
+        boolean noPrivateSession = privateChatUsers.isEmpty() && !getUsername().equals(user);
+        boolean noRepeatingPrivateSession =  !privateChatUsers.contains(user) && !getUsername().equals(user);
+
+        if( noPrivateSession|| noRepeatingPrivateSession ) {
+            privateChatUsers.add(user);
+            Platform.runLater(()->{
+                ClientPrivateChatController privateChatController = new ClientPrivateChatController();
+                privateChatController.setDriver(this);
+                ClientPrivateChatGUI privateChatGUI = new ClientPrivateChatGUI(privateChatController, user);
+                privateChatController.setView(privateChatGUI);
+                privateChatController.setClient(splashController.getClient());
+                privateChatWindows.put(user,privateChatController);
+                privateChatGUI.getStage().setOnCloseRequest((event)->privateChatUsers.remove(user));
+            });
+        }
+    }
+
+    public void openPrivateChatWindow(String user, String privateMsg){
+
+        boolean noPrivateSession = privateChatUsers.isEmpty() && !getUsername().equals(user);
+        boolean noRepeatingPrivateSession =  !privateChatUsers.contains(user) && !getUsername().equals(user);
+
+        if( noPrivateSession|| noRepeatingPrivateSession ) {
+            privateChatUsers.add(user);
+            Platform.runLater(()->{
+                ClientPrivateChatController privateChatController = new ClientPrivateChatController();
+                privateChatController.setDriver(this);
+                ClientPrivateChatGUI privateChatGUI = new ClientPrivateChatGUI(privateChatController, user);
+                privateChatController.setView(privateChatGUI);
+                privateChatController.setClient(splashController.getClient());
+                privateChatGUI.getStage().setOnCloseRequest((event)->privateChatUsers.remove(user));
+                privateChatWindows.put(user,privateChatController);
+                ClientPrivateChatController instance = privateChatWindows.get(user);
+                instance.appendChat(user + ": " + privateMsg);
+            });
+        } else{
+            ClientPrivateChatController instance = privateChatWindows.get(user);
+            instance.appendChat(user + ": " + privateMsg);
+        }
     }
 
 
@@ -104,6 +153,10 @@ public class ClientDriverGUI extends Application {
 
     public String getUsername(){
         return splashController.getUsername();
+    }
+
+    public ObservableList getOnlineUsers() {
+        return chatController.getOnlineUsers();
     }
 
 }

@@ -1,6 +1,7 @@
 package g53sqm.chat.client;
 
 import g53sqm.chat.Server;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -8,12 +9,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.service.query.NodeQuery;
 import org.testfx.util.WaitForAsyncUtils;
 
 import java.io.IOException;
@@ -23,6 +26,7 @@ import java.util.concurrent.TimeoutException;
 
 import static java.lang.String.valueOf;
 import static org.junit.Assert.*;
+import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 public class ChatScreenTest extends ApplicationTest {
     private Stage primaryStage;
@@ -119,6 +123,94 @@ public class ChatScreenTest extends ApplicationTest {
 
     }
 
+    @Test
+    public void ableToSendPrivateMsg() {
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#usernameField").write("test_user_3");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        Socket user1 = createMockUsers("test_user_10");
+        WaitForAsyncUtils.waitForFxEvents();
+        doubleClickOn(((Node) lookup(hasText("test_user_10")).query()));
+        WaitForAsyncUtils.waitForFxEvents();
+        interact(()->window("Private chat with test_user_10").requestFocus());
+        clickOn("#privateInput").write("Hello world");
+        clickOn("#privateSend");
+        TextArea privateChat = lookup("#privateChat").query();
+        assertTrue(privateChat.getText().contains("test_user_3: Hello world"));
+
+        userEnterCommandAndText(user1,"QUIT");
+
+    }
+
+    @Test
+    public void ableToReceivePrivateMsg_fromSingleUser() {
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#usernameField").write("test_user_3");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        Socket user1 = createMockUsers("test_user_10");
+        userEnterCommandAndText(user1,"MESG test_user_3 Hello world");
+        interact(()->window("Private chat with test_user_10").requestFocus());
+        TextArea privateChat = lookup("#privateChat").query();
+        System.out.println(privateChat.getText());
+        assertTrue(privateChat.getText().contains("test_user_10: Hello world"));
+
+        userEnterCommandAndText(user1,"QUIT");
+    }
+
+    @Test
+    public void ableToReceivePrivateMsg_fromMultipleUser() {
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#usernameField").write("test_user_3");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        Socket user1 = createMockUsers("test_user_10");
+        userEnterCommandAndText(user1,"MESG test_user_3 Hello world");
+        interact(()->window("Private chat with test_user_10").requestFocus());
+        TextArea privateChat = lookup("#privateChat").query();
+        assertTrue(privateChat.getText().contains("test_user_10: Hello world"));
+
+        Socket user2 = createMockUsers("test_user_20");
+        userEnterCommandAndText(user2,"MESG test_user_3 Hello world 2");
+        interact(()->window("Private chat with test_user_20").requestFocus());
+        privateChat = from("Private chat with test_user_20").lookup("#privateChat").query();
+        System.out.println(privateChat.getText());
+        assertTrue(privateChat.getText().contains("test_user_20: Hello world 2"));
+
+        userEnterCommandAndText(user1,"QUIT");
+        userEnterCommandAndText(user2, "QUIT");
+    }
+
+    @Test
+    public void unableToSendPrivateMsg_userOffline() {
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#usernameField").write("test_user_3");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        Socket user1 = createMockUsers("test_user_10");
+        WaitForAsyncUtils.waitForFxEvents();
+        doubleClickOn(((Node) lookup(hasText("test_user_10")).query()));
+        WaitForAsyncUtils.waitForFxEvents();
+        interact(()->window("Private chat with test_user_10").requestFocus());
+        clickOn("#privateInput").write("Hello world");
+        clickOn("#privateSend");
+        TextArea privateChat = lookup("#privateChat").query();
+        assertTrue(privateChat.getText().contains("test_user_3: Hello world"));
+
+        userEnterCommandAndText(user1,"QUIT");
+        clickOn("#privateInput").write("Hello world");
+        clickOn("#privateSend");
+        lookup("#privateChat").query();
+        assertTrue(privateChat.getText().contains("test_user_10 is offline."));
+        TextArea privateInput = lookup("#privateInput").query();
+        assertTrue(privateInput.isDisabled());
+    }
+
     @After
     public void afterEachTest() throws TimeoutException {
         FxToolkit.hideStage();
@@ -148,6 +240,16 @@ public class ChatScreenTest extends ApplicationTest {
         }catch(IOException|InterruptedException ie) {
             Assert.fail("Failed to send command and text");
         }
+    }
+
+    //utility functions to work with multiple windows
+    //referenced from https://github.com/TestFX/TestFX-Playground/blob/master/samples/issues/src/test/java/org/testfx/playground/issues/mailinglist_stage_focus_textfield.java
+    private NodeQuery from(String stageTitleRegex) {
+        return from(rootNodeOf(stageTitleRegex));
+    }
+
+    private Node rootNodeOf(String stageTitleRegex) {
+        return rootNode((Window) window(stageTitleRegex));
     }
 
 }

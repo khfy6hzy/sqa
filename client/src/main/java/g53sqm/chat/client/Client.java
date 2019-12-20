@@ -118,6 +118,8 @@ public class Client {
 
         @Override
         public void run() {
+            String username = null;
+            String privateMsg = null;
 
             while(running){
 
@@ -136,10 +138,20 @@ public class Client {
                                 cgui.appendChat(response);
                                 cgui.transition(true);
                             }
-                            else if(response.length() >= 6 && response.substring(0,7).equals("OK LIST")){
+                            else if(response.length() >= 7 && response.substring(0,7).equals("OK LIST")){
 
                                 //sends the list of online users to the gui driver controller
                                 cgui.updateOnlineUsers(response.substring(8));
+
+                            }
+                            else if(response.length() >= 7 && response.substring(0,7).equals("PM from")){
+                                // format is <PM from username:>
+                                username = response.substring(8).split(":")[0];
+                                privateMsg = response.substring(8).split(":")[1];
+
+                                cgui.openPrivateChatWindow(username,privateMsg);
+                            }
+                            else if(response.equals("BAD the user does not exist")||response.equals("OK your message has been sent")){
 
                             }
                             else{
