@@ -108,20 +108,20 @@ public class ClientDriverGUITest extends ApplicationTest {
 //        assertEquals(lookup.getText(),"Username cannot be empty");
 //    }
 //
-//    @Test
-//    public void unsuccesful_login_wrongConnectionCredentials() {
-//        Text lookup = lookup("#actionTarget").query();
-//        clickOn("#serverIpField").write("blabla");
-//        clickOn("#serverPortField").write("1234");
-//        clickOn("#usernameField").write("test_user");
-//        clickOn("#connect");
-//        WaitForAsyncUtils.waitForFxEvents();
-//        assertEquals(lookup.getText(),"Cannot connect to server!");
-//    }
+    @Test
+    public void unsuccesful_login_wrongConnectionCredentials() {
+        Text lookup = lookup("#actionTarget").query();
+        clickOn("#serverIpField").write("blabla");
+        clickOn("#serverPortField").write("1234");
+        clickOn("#usernameField").write("test_user");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        assertEquals(lookup.getText(),"Cannot connect to server!");
+    }
 
     @Test
     public void unsuccesful_login_usernameTaken() {
-        createMockUsers("test_user_1");
+        Socket user = createMockUsers("test_user_1");
         Text lookup = lookup("#actionTarget").query();
         clickOn("#serverIpField").write("localhost");
         clickOn("#serverPortField").write(valueOf(test_port_no));
@@ -129,12 +129,13 @@ public class ClientDriverGUITest extends ApplicationTest {
         clickOn("#connect");
         WaitForAsyncUtils.waitForFxEvents();
         assertEquals("Username already exists!", lookup.getText());
+        userEnterCommandAndText(user,"QUIT ");
     }
 
     @Test
     public void succesful_login_usernameNotTaken() {
-        createMockUsers("test_user_1");
-        createMockUsers("test_user_2");
+        Socket user1 = createMockUsers("test_user_1");
+        Socket user2 = createMockUsers("test_user_2");
         Text lookup = lookup("#actionTarget").query();
         clickOn("#serverIpField").write("localhost");
         clickOn("#serverPortField").write(valueOf(test_port_no));
@@ -142,6 +143,8 @@ public class ClientDriverGUITest extends ApplicationTest {
         clickOn("#connect");
         WaitForAsyncUtils.waitForFxEvents();
         assertEquals("Public Chat Room",primaryStage.getTitle());
+        userEnterCommandAndText(user1,"QUIT ");
+        userEnterCommandAndText(user2,"QUIT ");
     }
 
 
