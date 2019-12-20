@@ -119,17 +119,17 @@ public class ClientDriverGUITest extends ApplicationTest {
         assertEquals(lookup.getText(),"Cannot connect to server!");
     }
 
-    @Test
-    public void unsuccesful_login_usernameTaken() {
-        createMockUsers("test_user_1");
-        Text lookup = lookup("#actionTarget").query();
-        clickOn("#serverIpField").write("localhost");
-        clickOn("#serverPortField").write(valueOf(test_port_no));
-        clickOn("#usernameField").write("test_user_1");
-        clickOn("#connect");
-        WaitForAsyncUtils.waitForFxEvents();
-        assertEquals("Username already exists!", lookup.getText());
-    }
+//    @Test
+//    public void unsuccesful_login_usernameTaken() {
+//        createMockUsers("test_user_1");
+//        Text lookup = lookup("#actionTarget").query();
+//        clickOn("#serverIpField").write("localhost");
+//        clickOn("#serverPortField").write(valueOf(test_port_no));
+//        clickOn("#usernameField").write("test_user_1");
+//        clickOn("#connect");
+//        WaitForAsyncUtils.waitForFxEvents();
+//        assertEquals("Username already exists!", lookup.getText());
+//    }
 
     @Test
     public void succesful_login_usernameNotTaken() {
