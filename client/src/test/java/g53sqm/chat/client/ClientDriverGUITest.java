@@ -99,15 +99,15 @@ public class ClientDriverGUITest extends ApplicationTest {
 //        assertEquals(lookup.getText(),"Invalid server port number!");
 //    }
 //
-//    @Test
-//    public void unsuccessful_login_emptyUsernameField(){
-//        Text lookup = lookup("#actionTarget").query();
-//        clickOn("#serverIpField").write("localhost");
-//        clickOn("#serverPortField").write(valueOf(test_port_no));
-//        clickOn("#connect");
-//        assertEquals(lookup.getText(),"Username cannot be empty");
-//    }
-//
+    @Test
+    public void unsuccessful_login_emptyUsernameField(){
+        Text lookup = lookup("#actionTarget").query();
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#connect");
+        assertEquals(lookup.getText(),"Username cannot be empty");
+    }
+
     @Test
     public void unsuccesful_login_wrongConnectionCredentials() {
         Text lookup = lookup("#actionTarget").query();
