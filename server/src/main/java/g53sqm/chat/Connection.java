@@ -119,7 +119,7 @@ public class Connection implements Runnable {
 				for(String s: userList) {
 					userListString += s + ", ";
 				}
-				sendOverConnection("OK " + userListString);
+				sendOverConnection("OK LIST " + userListString);
 				break;
 			
 			case STATE_UNREGISTERED:

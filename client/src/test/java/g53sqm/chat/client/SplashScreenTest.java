@@ -23,9 +23,8 @@ import java.util.concurrent.TimeoutException;
 
 import static java.lang.String.valueOf;
 import static org.junit.Assert.*;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
-public class ClientDriverGUITest extends ApplicationTest {
+public class SplashScreenTest extends ApplicationTest {
 
     private Stage primaryStage;
     private Server test_server;

@@ -136,6 +136,12 @@ public class Client {
                                 cgui.appendChat(response);
                                 cgui.transition(true);
                             }
+                            else if(response.length() >= 6 && response.substring(0,7).equals("OK LIST")){
+
+                                //sends the list of online users to the gui driver controller
+                                cgui.updateOnlineUsers(response.substring(8));
+
+                            }
                             else{
                                 cgui.appendChat(response);
                             }
