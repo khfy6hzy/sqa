@@ -73,16 +73,16 @@ public class ClientDriverGUITest extends ApplicationTest {
 //        clickOn("no_such_element");
 //    }
 //
-//    @Test
-//    public void successful_Login() {
-//            assertEquals("Connect to Chat Room",primaryStage.getTitle());
-//            clickOn("#serverIpField").write("localhost");
-//            clickOn("#serverPortField").write(valueOf(test_port_no));
-//            clickOn("#usernameField").write("test_user");
-//            clickOn("#connect");
-//            assertEquals("Public Chat Room",primaryStage.getTitle());
-//
-//    }
+    @Test
+    public void successful_Login() {
+            assertEquals("Connect to Chat Room",primaryStage.getTitle());
+            clickOn("#serverIpField").write("localhost");
+            clickOn("#serverPortField").write(valueOf(test_port_no));
+            clickOn("#usernameField").write("test_user");
+            clickOn("#connect");
+            assertEquals("Public Chat Room",primaryStage.getTitle());
+
+    }
 //
 //    @Test
 //    public void unsuccessful_login_emptyServerIpField(){
