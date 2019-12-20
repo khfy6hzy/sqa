@@ -83,14 +83,14 @@ public class ClientDriverGUITest extends ApplicationTest {
             assertEquals("Public Chat Room",primaryStage.getTitle());
 
     }
-//
-//    @Test
-//    public void unsuccessful_login_emptyServerIpField(){
-//        Text lookup = lookup("#actionTarget").query();
-//        clickOn("#connect");
-//        assertEquals(lookup.getText(),"Server IP cannot be empty!");
-//    }
-//
+
+    @Test
+    public void unsuccessful_login_emptyServerIpField(){
+        Text lookup = lookup("#actionTarget").query();
+        clickOn("#connect");
+        assertEquals(lookup.getText(),"Server IP cannot be empty!");
+    }
+
 //    @Test
 //    public void unsuccessful_login_emptyServerPortField(){
 //        Text lookup = lookup("#actionTarget").query();
