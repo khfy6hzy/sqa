@@ -30,7 +30,7 @@ public class ClientChatController {
             return ;
         }
 
-        client.sendMessage(msg);
+        client.sendMessage("HAIL " + msg);
 
         if(msg.equals("QUIT")){
             client.closeConnection();

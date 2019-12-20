@@ -70,6 +70,7 @@ public class ClientChatGUI {
         input = new TextArea();
         input.setPrefRowCount(5);
         input.setWrapText(true);
+        input.setId("input");
 
         //send button
         send = new Button();
@@ -77,6 +78,7 @@ public class ClientChatGUI {
         send.setOnAction(event -> {
             controller.doSend();
         });
+        send.setId("send");
 
         //set margins and combine all components into the container
         HBox.setMargin(input,new Insets(5));

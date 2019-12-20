@@ -61,7 +61,6 @@ public class ChatScreenTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) {
-        stage.setAlwaysOnTop(true);
         new ClientDriverGUI().start(stage);
         this.primaryStage = stage;
     }
@@ -102,6 +101,21 @@ public class ChatScreenTest extends ApplicationTest {
         assertEquals("Online user(s):2", numberOnline.getText());
         assertTrue(online.getItems().contains("test_user_3") && online.getItems().contains("test_user_1"));
         userEnterCommandAndText(user1,"QUIT");
+
+    }
+
+    @Test
+    public void singleUser_ableToSendBroadcast() {
+        clickOn("#serverIpField").write("localhost");
+        clickOn("#serverPortField").write(valueOf(test_port_no));
+        clickOn("#usernameField").write("test_user_3");
+        clickOn("#connect");
+        WaitForAsyncUtils.waitForFxEvents();
+        TextArea input = lookup("#input").query();
+        TextArea chat = lookup("#chat").query();
+        input.setText("Hello world");
+        clickOn("#send");
+        assertTrue(chat.getText().contains("Broadcast from test_user_3: Hello world"));
 
     }
 
