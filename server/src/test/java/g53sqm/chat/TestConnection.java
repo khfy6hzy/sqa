@@ -214,7 +214,7 @@ public class TestConnection {
         socketReceiveMessage(test_socket); //clear message
 
         socketEnterCommandAndText(test_socket, "LIST");
-        String message_p1 = "OK ";
+        String message_p1 = "OK LIST ";
         String message_p2 = registered_username;
         String message_p3 = ", ";
         String expected_message = message_p1 + message_p2 + message_p3;
@@ -235,7 +235,7 @@ public class TestConnection {
         socketEnterCommandAndText(test_socket2,"IDEN " + registered_username2);
         socketReceiveMessage(test_socket2); //clear message
 
-        String message_p1 = "OK ";
+        String message_p1 = "OK LIST ";
         String message_p2 = ", ";
         String expected_message = message_p1 + registered_username1 + message_p2 + registered_username2 + message_p2;
 
