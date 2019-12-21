@@ -379,6 +379,23 @@ public class TestServer {
         assertEquals(0,actual_no_users_online);
     }
 
+    Socket[] socketArray = new Socket[100];
+    //load testing with 100 mock users
+    @Test
+    public void stressTest_usersOnline_returnCorrectNo() {
+        //Create mock clients
+        int i=0;
+        while(i< 100){
+            Socket temp = createMockUsers("client"+i ,test_port_no);
+            socketArray[i] = temp;
+            i++;
+        }
+
+        int actual_no_users_online = test_server.getNumberOfUsers();
+        assertEquals(100,actual_no_users_online);
+    }
+
+
     @After
     public void closeConnection(){
         test_server.stopListening();
