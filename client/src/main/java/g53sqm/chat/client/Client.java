@@ -112,17 +112,14 @@ public class Client {
         return connected;
     }
 
-    public void validateUsername(String username){
-        this.username = username;
-        sendMessage("IDEN " + username);
-    }
-
     private class ServerResponse implements Runnable {
 
         private volatile boolean running = true; // volatile to force thread to read from main memory
 
         @Override
         public void run() {
+            String username = null;
+            String privateMsg = null;
 
             while(running){
 
@@ -140,6 +137,22 @@ public class Client {
                             else if(response.equals("OK Welcome to the chat server " + cgui.getUsername())){
                                 cgui.appendChat(response);
                                 cgui.transition(true);
+                            }
+                            else if(response.length() >= 7 && response.substring(0,7).equals("OK LIST")){
+
+                                //sends the list of online users to the gui driver controller
+                                cgui.updateOnlineUsers(response.substring(8));
+
+                            }
+                            else if(response.length() >= 7 && response.substring(0,7).equals("PM from")){
+                                // format is <PM from username:>
+                                username = response.substring(8).split(":")[0];
+                                privateMsg = response.substring(8).split(":")[1];
+
+                                cgui.openPrivateChatWindow(username,privateMsg);
+                            }
+                            else if(response.equals("BAD the user does not exist")||response.equals("OK your message has been sent")){
+
                             }
                             else{
                                 cgui.appendChat(response);

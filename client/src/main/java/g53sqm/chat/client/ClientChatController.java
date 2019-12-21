@@ -1,6 +1,7 @@
 package g53sqm.chat.client;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 public class ClientChatController {
 
@@ -29,7 +30,7 @@ public class ClientChatController {
             return ;
         }
 
-        client.sendMessage(msg);
+        client.sendMessage("HAIL " + msg);
 
         if(msg.equals("QUIT")){
             client.closeConnection();
@@ -42,6 +43,28 @@ public class ClientChatController {
     public void appendChat(String msg){
         Platform.runLater(()->chat.chat.appendText(msg + '\n'));
     }
+
+    public void updateOnlineUsers(ObservableList list){
+        Platform.runLater(()->{
+            Platform.runLater(()->{
+                chat.online.setItems(list);
+                chat.numberOnline.setText("Online user(s):" + list.size());
+            });
+        });
+
+    }
+
+    public void openPrivateChatWindow(){
+
+        driver.openPrivateChatWindow(chat.online.getSelectionModel().getSelectedItem().toString());
+
+
+    }
+
+    public ObservableList getOnlineUsers(){
+        return chat.online.getItems();
+    }
+
 
     public void clean(){
         Platform.runLater(()->chat.chat.clear());
