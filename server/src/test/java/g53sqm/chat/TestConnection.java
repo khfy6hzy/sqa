@@ -370,9 +370,14 @@ public class TestConnection {
     }
 
     @Test
-    public void hail_1userRegisterednoPublicMessageEntered_sendErrorMessageForEmptyMessage(){
+    public void hail_1userRegisteredNoPublicMessageEntered_sendErrorMessageForEmptyMessage(){
         Socket test_socket = createConnection(test_port_no);
         socketReceiveMessage(test_socket); //welcome message
+
+        String username = "clientusername";
+        socketEnterCommandAndText(test_socket,"IDEN " + username);
+        socketReceiveMessage(test_socket); //welcome message after enter username
+
         socketEnterCommandAndText(test_socket,"HAIL ");
 
         String expected_error_message = "BAD no message entered";
