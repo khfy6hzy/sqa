@@ -255,7 +255,7 @@ public class TestServer {
     }
 
     @Test
-    public void sendPrivateMessage_message1UserValidameUsername_userReceivesMessage(){
+    public void sendPrivateMessage_message1UserValidUsername_userReceivesMessage(){
         Socket client1 = createMockUsers("client1",test_port_no);
         userReceiveMessage(client1); //welcome message
 
