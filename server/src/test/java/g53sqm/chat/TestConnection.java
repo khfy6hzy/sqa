@@ -509,7 +509,7 @@ public class TestConnection {
     }
 
     @Test
-    public void mesg_userRegisteredPrivateMessageExistingUser_returnErrorMessage(){
+    public void mesg_userRegisteredPrivateMessageExistingUser_returnCorrectMessage(){
         Socket test_socket1 = createConnection(test_port_no);
         String username1 = "client1username";
         socketEnterCommandAndText(test_socket1,"IDEN " + username1);
