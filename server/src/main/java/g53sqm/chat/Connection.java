@@ -149,7 +149,7 @@ public class Connection implements Runnable {
 				break;
 			
 			case STATE_UNREGISTERED:
-				String username = message.split(" ")[0];
+				String username = message;
 				if(serverReference.doesUserExist(username)) {
 					sendOverConnection("BAD username is already taken");
 				} else {

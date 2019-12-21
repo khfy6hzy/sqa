@@ -275,11 +275,25 @@ public class TestConnection {
     }
 
     @Test
-    public void iden_enterUsernameWhenUnregistered_returnWelcomeMessage(){
+    public void iden_enterUsernameWithoutBlanksWhenUnregistered_returnWelcomeMessage(){
         Socket test_socket = createConnection(test_port_no);
         socketReceiveMessage(test_socket); //welcome message
 
         String registered_username = "clientusername";
+        socketEnterCommandAndText(test_socket,"IDEN " + registered_username);
+
+        String expected_message = "OK Welcome to the chat server " + registered_username;
+        String actual_message = socketReceiveMessage(test_socket);
+
+        assertEquals(expected_message,actual_message);
+    }
+
+    @Test
+    public void iden_enterUsernameWithBlanksWhenUnregistered_returnWelcomeMessage(){
+        Socket test_socket = createConnection(test_port_no);
+        socketReceiveMessage(test_socket); //welcome message
+
+        String registered_username = "client username";
         socketEnterCommandAndText(test_socket,"IDEN " + registered_username);
 
         String expected_message = "OK Welcome to the chat server " + registered_username;
