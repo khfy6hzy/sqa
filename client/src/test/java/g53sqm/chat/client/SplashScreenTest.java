@@ -1,7 +1,6 @@
 package g53sqm.chat.client;
 
 import g53sqm.chat.Server;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
@@ -10,7 +9,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobotException;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
@@ -63,7 +61,7 @@ public class SplashScreenTest extends ApplicationTest {
     @Override
     public void start(Stage stage) {
         stage.setAlwaysOnTop(true);
-        new ClientDriverGUI().start(stage);
+        new ClientDriver().start(stage);
         this.primaryStage = stage;
     }
 

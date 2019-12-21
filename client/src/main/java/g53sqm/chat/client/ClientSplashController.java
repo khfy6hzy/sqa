@@ -5,19 +5,19 @@ import javafx.scene.paint.Color;
 
 public class ClientSplashController {
 
-    private ClientDriverGUI driver;
-    private ClientSplashGUI splash;
+    private ClientDriver driver;
+    private ClientSplashView splash;
     private Client client;
 
     private String serverIp;
     private int serverPort;
     private String username;
 
-    public void setView(ClientSplashGUI splash){
+    public void setView(ClientSplashView splash){
         this.splash = splash;
     }
 
-    public void setDriver(ClientDriverGUI driver){
+    public void setDriver(ClientDriver driver){
         this.driver = driver;
     }
 
