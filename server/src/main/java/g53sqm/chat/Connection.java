@@ -64,6 +64,7 @@ public class Connection implements Runnable {
 		if(message.length() < 4){
 			sendOverConnection ("BAD invalid command to server");
 		} else {
+		    String trimmed_message = message.trim();
 			switch(message.substring(0,4)){
 				case "LIST":
 					list();
@@ -74,15 +75,27 @@ public class Connection implements Runnable {
 					break;
 					
 				case "IDEN":
-					iden(message.substring(5));
+				    if (trimmed_message.length() > 4){
+                        iden(message.substring(5));
+                    } else{
+                        sendOverConnection ("BAD no username entered");
+                    }
 					break;
 					
 				case "HAIL":
-					hail(message.substring(5));
-					break;
-				
+                    if (trimmed_message.length() > 4){
+                        hail(message.substring(5));
+                    } else{
+                        sendOverConnection ("BAD no message entered");
+                    }
+                    break;
+
 				case "MESG":
-					mesg(message.substring(5));
+                    if (trimmed_message.length() > 4){
+                        mesg(message.substring(5));
+                    } else{
+                        sendOverConnection ("BAD no message entered");
+                    }
 					break;
 				
 				case "QUIT":
@@ -101,7 +114,7 @@ public class Connection implements Runnable {
 		String status = "There are currently "+serverReference.getNumberOfUsers()+" user(s) on the server ";
 		switch(state) {
 			case STATE_REGISTERED:
-				status += "You are logged im and have sent " + messageCount + " message(s)";
+				status += "You are logged in and have sent " + messageCount + " message(s)";
 				break;
 			
 			case STATE_UNREGISTERED:
@@ -119,7 +132,7 @@ public class Connection implements Runnable {
 				for(String s: userList) {
 					userListString += s + ", ";
 				}
-				sendOverConnection("OK " + userListString);
+				sendOverConnection("OK LIST " + userListString);
 				break;
 			
 			case STATE_UNREGISTERED:
@@ -132,7 +145,7 @@ public class Connection implements Runnable {
 	private void iden(String message) {
 		switch(state) {
 			case STATE_REGISTERED:
-				sendOverConnection("BAD you are already registerd with username " + username);
+				sendOverConnection("BAD you are already registered with username " + username);
 				break;
 			
 			case STATE_UNREGISTERED:
