@@ -154,6 +154,12 @@ public class TestServer {
         expected_users_online[0] = "client2";
         assertEquals(expected_users_online[0],actual_users_online.get(0));
         assertArrayEquals(expected_users_online,actual_users_online.toArray());
+
+        //client2 quits
+        userEnterCommandAndText(client2, "QUIT");
+        actual_users_online = test_server.getUserList();
+        expected_users_online = new String[0];
+        assertArrayEquals(expected_users_online,actual_users_online.toArray());
     }
 
     @Test
