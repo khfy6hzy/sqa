@@ -15,7 +15,7 @@ public class Client {
     private BufferedReader streamIn = null; // get responses from server via socket input stream
     private ServerResponse serverResponse;
     private ConsoleInput consoleInput;
-    private ClientDriverGUI cgui = null; // GUI reference for easy manipulation of UI elements
+    private ClientDriver cgui = null; // GUI reference for easy manipulation of UI elements
     private boolean connected = false; // flag to check connection status
 
     private String username = "";
@@ -37,7 +37,7 @@ public class Client {
 
     }
 
-    public Client(String serverIp, int serverPort, ClientDriverGUI cg){
+    public Client(String serverIp, int serverPort, ClientDriver cg){
 
         startConnection(serverIp, serverPort);
 

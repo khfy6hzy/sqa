@@ -7,7 +7,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.junit.After;
@@ -65,7 +64,7 @@ public class ChatScreenTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) {
-        new ClientDriverGUI().start(stage);
+        new ClientDriver().start(stage);
         this.primaryStage = stage;
     }
 
