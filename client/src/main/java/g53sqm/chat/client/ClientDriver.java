@@ -11,12 +11,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ClientDriverGUI extends Application {
+public class ClientDriver extends Application {
 
     private Client client;
-    private ClientSplashGUI splash;
+    private ClientSplashView splash;
     private ClientSplashController splashController;
-    private ClientChatGUI chat;
+    private ClientChatView chat;
     private ClientChatController chatController;
     private Stage primaryStage;
     private ObservableList<String> onlineUsers;
@@ -32,7 +32,7 @@ public class ClientDriverGUI extends Application {
 
         splashController = new ClientSplashController();
         splashController.setDriver(this);
-        splash = new ClientSplashGUI(splashController);
+        splash = new ClientSplashView(splashController);
         splashController.setView(splash);
 
         primaryStage.setScene(splash.getScene());
@@ -43,7 +43,7 @@ public class ClientDriverGUI extends Application {
 
         chatController = new ClientChatController();
         chatController.setDriver(this);
-        chat = new ClientChatGUI(chatController);
+        chat = new ClientChatView(chatController);
         chatController.setView(chat);
 
     }
@@ -113,7 +113,7 @@ public class ClientDriverGUI extends Application {
             Platform.runLater(()->{
                 ClientPrivateChatController privateChatController = new ClientPrivateChatController();
                 privateChatController.setDriver(this);
-                ClientPrivateChatGUI privateChatGUI = new ClientPrivateChatGUI(privateChatController, user);
+                ClientPrivateChatView privateChatGUI = new ClientPrivateChatView(privateChatController, user);
                 privateChatController.setView(privateChatGUI);
                 privateChatController.setClient(splashController.getClient());
                 privateChatWindows.put(user,privateChatController);
@@ -132,7 +132,7 @@ public class ClientDriverGUI extends Application {
             Platform.runLater(()->{
                 ClientPrivateChatController privateChatController = new ClientPrivateChatController();
                 privateChatController.setDriver(this);
-                ClientPrivateChatGUI privateChatGUI = new ClientPrivateChatGUI(privateChatController, user);
+                ClientPrivateChatView privateChatGUI = new ClientPrivateChatView(privateChatController, user);
                 privateChatController.setView(privateChatGUI);
                 privateChatController.setClient(splashController.getClient());
                 privateChatGUI.getStage().setOnCloseRequest((event)->privateChatUsers.remove(user));

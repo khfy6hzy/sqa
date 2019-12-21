@@ -5,11 +5,11 @@ import javafx.collections.ObservableList;
 
 public class ClientChatController {
 
-    private ClientChatGUI chat;
+    private ClientChatView chat;
     private Client client;
-    private ClientDriverGUI driver;
+    private ClientDriver driver;
 
-    public void setView(ClientChatGUI chat){
+    public void setView(ClientChatView chat){
         this.chat = chat;
     }
 
@@ -17,7 +17,7 @@ public class ClientChatController {
         this.client = client;
     }
 
-    public void setDriver(ClientDriverGUI driver){
+    public void setDriver(ClientDriver driver){
         this.driver = driver;
     }
 

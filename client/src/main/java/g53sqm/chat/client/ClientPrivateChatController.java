@@ -4,15 +4,15 @@ import javafx.application.Platform;
 
 public class ClientPrivateChatController {
 
-    private ClientPrivateChatGUI privateChat;
+    private ClientPrivateChatView privateChat;
     private Client client;
-    private ClientDriverGUI driver;
+    private ClientDriver driver;
 
-    public void setView(ClientPrivateChatGUI privateChat){ this.privateChat = privateChat; }
+    public void setView(ClientPrivateChatView privateChat){ this.privateChat = privateChat; }
 
     public void setClient(Client client) { this.client = client; }
 
-    public void setDriver(ClientDriverGUI driver) { this.driver = driver; }
+    public void setDriver(ClientDriver driver) { this.driver = driver; }
 
     public void doSend(String pmTarget){
         String msg = privateChat.input.getText();

@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-public class ClientSplashGUI {
+public class ClientSplashView {
 
     ClientSplashController controller;
     GridPane gridPane;
@@ -20,7 +20,7 @@ public class ClientSplashGUI {
     Button connect;
     Text actionTarget;
 
-    public ClientSplashGUI(ClientSplashController controller){
+    public ClientSplashView(ClientSplashController controller){
 
         this.controller = controller;
         init();
