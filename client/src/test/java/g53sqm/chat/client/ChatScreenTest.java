@@ -80,9 +80,9 @@ public class ChatScreenTest extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
         TextArea chat = lookup("#chat").query();
         userEnterCommandAndText(user1,"HAIL Hello world!");
-        assertTrue(chat.getText().contains("Broadcast from test_user_1: Hello world!"));
+        assertTrue(chat.getText().contains("test_user_1: Hello world!"));
         userEnterCommandAndText(user2,"HAIL Hi guys!");
-        assertTrue(chat.getText().contains("Broadcast from test_user_2: Hi guys!"));
+        assertTrue(chat.getText().contains("test_user_2: Hi guys!"));
         userEnterCommandAndText(user1,"QUIT");
         userEnterCommandAndText(user2,"QUIT");
     }
@@ -118,7 +118,7 @@ public class ChatScreenTest extends ApplicationTest {
         TextArea chat = lookup("#chat").query();
         input.setText("Hello world");
         clickOn("#send");
-        assertTrue(chat.getText().contains("Broadcast from test_user_3: Hello world"));
+        assertTrue(chat.getText().contains("test_user_3: Hello world"));
 
     }
 

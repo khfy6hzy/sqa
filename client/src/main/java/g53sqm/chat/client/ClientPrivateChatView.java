@@ -58,6 +58,7 @@ public class ClientPrivateChatView {
         send.setOnAction(event -> {
             controller.doSend(pmTarget);
         });
+        send.prefWidth(100);
         send.setId("privateSend");
 
         //set margins and combine all components into the container

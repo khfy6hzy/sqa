@@ -85,6 +85,8 @@ public class ClientChatView {
             controller.doSend();
         });
         send.setId("send");
+        send.setPrefWidth(100);
+
 
         //set margins and combine all components into the container
         HBox.setMargin(input,new Insets(5));

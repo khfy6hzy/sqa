@@ -135,7 +135,7 @@ public class Client {
                                 cgui.transition(false);
                             }
                             else if(response.equals("OK Welcome to the chat server " + cgui.getUsername())){
-                                cgui.appendChat(response);
+                                cgui.appendChat(response.substring(3));
                                 cgui.transition(true);
                             }
                             else if(response.length() >= 7 && response.substring(0,7).equals("OK LIST")){
@@ -155,7 +155,15 @@ public class Client {
 
                             }
                             else{
-                                cgui.appendChat(response);
+                                if(response.length() >=2 && response.substring(0,3).equals("OK ")) {
+                                    response = response.substring(3);
+                                }
+                                if(response.length() >=2 && response.substring(0,15).equals("Broadcast from ")){
+                                    response = response.substring(15);
+                                }
+                                if(response.length()>0){
+                                    cgui.appendChat(response);
+                                }
                             }
                         }
                         else{
@@ -212,17 +220,17 @@ public class Client {
         }
     }
 
-    public static void main(String args[]){
-
-        Client client = null;
-
-        if(args.length !=2){
-            System.out.println("Usage: java Client ip port");
-        }
-        else{
-            client = new Client(args[0], Integer.parseInt(args[1]));
-        }
-
-    }
+//    public static void main(String args[]){
+//
+//        Client client = null;
+//
+//        if(args.length !=2){
+//            System.out.println("Usage: java Client ip port");
+//        }
+//        else{
+//            client = new Client(args[0], Integer.parseInt(args[1]));
+//        }
+//
+//    }
 
 }
