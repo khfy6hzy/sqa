@@ -136,6 +136,7 @@ public class Client {
                             }
                             else if(response.equals("OK Welcome to the chat server " + cgui.getUsername())){
                                 cgui.appendChat(response.substring(3));
+                                cgui.appendChat("***Double click on a username on the right to start private message session***");
                                 cgui.transition(true);
                             }
                             else if(response.length() >= 7 && response.substring(0,7).equals("OK LIST")){
